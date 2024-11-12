@@ -5,7 +5,17 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: 
+    {
+      colors:{mint:"#47b65c",
+              lagoon:"#3c8bc7",
+              sunset:"#ff7418",
+              navy:"#172b4d",
+              primaryBG:"#f2f2f4",  
+
+    }, 
+      fontFamily:{segoe: ['"Segoe UI"', 'Roboto', 'Arial', 'sans-serif'],
+                  consolas:['Consolas', 'Courier New', 'monospace']}},
   },
   plugins: [],
 }

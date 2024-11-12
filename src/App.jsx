@@ -1,7 +1,11 @@
+import MainLayout from "./layout/MainLayout";
+
 function App() {
   return (
     <>
-      <div className="bg-slate-600">This is my application</div>
+      <div className="font-segoe bg-primaryBG container h-screen">
+        <MainLayout />
+      </div>
     </>
   );
 }
