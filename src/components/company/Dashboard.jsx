@@ -3,20 +3,20 @@ const Dashboard = () => {
     <div>
       <div className="mb-6 md:mb-8">
         <h2 className="mb-3 text-base font-semibold sm:text-lg md:mb-4 lg:text-xl">
-          Site Details
+          Sites Metrics
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
-          <div className="rounded-lg border bg-white p-3 text-sm shadow sm:p-4 sm:text-base">
-            <h3 className="mb-2 font-medium text-gray-600">Total Sites</h3>
-            <p className="text-xl font-bold text-gray-800 sm:text-2xl">125</p>
+          <div className="border bg-mint p-3 text-sm shadow sm:p-4 sm:text-base">
+            <h3 className="mb-2 font-medium text-white">Total Sites</h3>
+            <p className="text-xl font-bold text-white sm:text-2xl">125</p>
           </div>
-          <div className="rounded-lg border bg-white p-3 text-sm shadow sm:p-4 sm:text-base">
-            <h3 className="mb-2 font-medium text-gray-600">Active Sites</h3>
-            <p className="text-xl font-bold text-gray-800 sm:text-2xl">98</p>
+          <div className="bg-sunset p-3 text-sm shadow sm:p-4 sm:text-base">
+            <h3 className="mb-2 font-medium text-white">Active Sites</h3>
+            <p className="text-xl font-bold text-white sm:text-2xl">98</p>
           </div>
-          <div className="rounded-lg border bg-white p-3 text-sm shadow sm:p-4 sm:text-base">
-            <h3 className="mb-2 font-medium text-gray-600">Inactive Sites</h3>
-            <p className="text-xl font-bold text-gray-800 sm:text-2xl">27</p>
+          <div className="bg-lagoon p-3 text-sm shadow sm:p-4 sm:text-base">
+            <h3 className="mb-2 font-medium text-white">Inactive Sites</h3>
+            <p className="text-xl font-bold text-white sm:text-2xl">27</p>
           </div>
         </div>
       </div>
@@ -80,16 +80,16 @@ const Dashboard = () => {
                     Primary
                   </td>
                   <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    John
+                    Emmanuel
                   </td>
                   <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    Doe
+                    Haastrup
                   </td>
                   <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    john@example.com
+                    manny@mail.com
                   </td>
                   <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    +1 234-567-8900
+                    0812345645
                   </td>
                 </tr>
                 <tr>
@@ -97,16 +97,16 @@ const Dashboard = () => {
                     Secondary
                   </td>
                   <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    Jane
+                    Samuel
                   </td>
                   <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    Smith
+                    Adekoya
                   </td>
                   <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    jane@example.com
+                    samade@mail.com
                   </td>
                   <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    +1 234-567-8901
+                    08123456778
                   </td>
                 </tr>
               </tbody>

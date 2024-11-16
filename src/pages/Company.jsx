@@ -10,7 +10,7 @@ const Company = () => {
       {/* Company Header */}
       <div className="mb-4 md:mb-6">
         <h1 className="text-lg font-bold sm:text-xl lg:text-2xl">
-          Company Name
+          Lekki Solar Power Co.
         </h1>
       </div>
 
@@ -23,7 +23,7 @@ const Company = () => {
               className={`mr-4 px-1 py-2 text-sm font-medium sm:text-base ${
                 activeTab === "dashboard"
                   ? "border-b-2 border-blue-500 text-blue-600"
-                  : "text-gray-500 hover:border-b-2 hover:border-gray-300 hover:text-gray-700"
+                  : "text-grey hover:border-b-2 hover:border-grey hover:text-grey"
               }`}
             >
               Dashboard
@@ -32,8 +32,8 @@ const Company = () => {
               onClick={() => setActiveTab("projects")}
               className={`mr-4 px-1 py-2 text-sm font-medium sm:text-base ${
                 activeTab === "projects"
-                  ? "border-b-2 border-blue-500 text-blue-600"
-                  : "text-gray-500 hover:border-b-2 hover:border-gray-300 hover:text-gray-700"
+                  ? "border-b-2 border-lagoon text-lagoon"
+                  : "text-grey hover:border-b-2 hover:border-grey hover:text-grey"
               }`}
             >
               All Projects

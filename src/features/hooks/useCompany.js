@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
-import { CompanyContext } from "../context/CompanyContext";
-import { getAllCompanies } from "../services/companyApi";
-import { useLoading } from "../features/loader/hooks/useLoading";
+import { CompanyContext } from "./../company/contexts/CompanyContext";
+import { getAllCompanies } from "./../../apis/companyApis";
+import { useLoading } from "./../loader/hooks/useLoading";
 
 export const useCompany = () => {
   const context = useContext(CompanyContext);

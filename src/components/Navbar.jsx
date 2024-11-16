@@ -1,4 +1,5 @@
 import { FaUser, SiJfrogpipelines } from "./../icons/index.js";
+import { Link } from "react-router-dom";
 import logo from "./../assets/logo.jpg";
 
 const NavBar = () => {
@@ -9,17 +10,29 @@ const NavBar = () => {
       </div>
 
       <div className="flex items-center gap-x-4 text-sm md:text-base lg:text-base">
+        <Link to="/general-pipeline">
+          <div className="text-mint">
+            <span className="block md:hidden">
+              <SiJfrogpipelines className="text-lg sm:text-xl md:text-2xl" />
+            </span>
+            <span className="hidden md:block">General-Pipeline</span>
+          </div>
+        </Link>
         <div className="text-mint">
-          <span className="block md:hidden">
-            <SiJfrogpipelines className="text-lg sm:text-xl md:text-2xl" />
-          </span>
-          <span className="hidden md:block">General-Pipeline</span>
+          <Link to="/user">
+            <span className="block md:hidden">
+              <FaUser className="text-lg sm:text-xl md:text-2xl" />
+            </span>
+            <span className="hidden md:block">User</span>
+          </Link>
         </div>
         <div className="text-mint">
-          <span className="block md:hidden">
-            <FaUser className="text-lg sm:text-xl md:text-2xl" />
-          </span>
-          <span className="hidden md:block">User</span>
+          <Link to="/company">
+            <span className="block md:hidden">
+              <FaUser className="text-lg sm:text-xl md:text-2xl" />
+            </span>
+            <span className="hidden md:block">Company</span>
+          </Link>
         </div>
       </div>
     </nav>

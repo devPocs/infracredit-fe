@@ -49,6 +49,7 @@ export const createCompany = async (formData) => {
 
 export const getAllCompanies = async () => {
     try {
+        console.log("getting companies")
       const response = await fetch(`${API_BASE_URL}/Company/companies`);
       if (!response.ok) {
         throw new Error('Failed to fetch companies');

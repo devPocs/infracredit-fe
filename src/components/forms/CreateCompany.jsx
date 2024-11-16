@@ -2,10 +2,12 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { useLoading } from "../../features/loader/hooks/useLoading";
 import { toast } from "react-toastify";
-import { createCompany } from "./../../apis/companyApis";
+import { useCompany } from "../../features/hooks/useCompany";
 
 const CreateCompanyForm = ({ onClose }) => {
   const { setIsLoading } = useLoading();
+  const { addCompany } = useCompany();
+
   const [formData, setFormData] = useState({
     companyName: "",
     projectName: "",
@@ -39,10 +41,8 @@ const CreateCompanyForm = ({ onClose }) => {
     setIsLoading(true);
 
     try {
-      await createCompany(formData);
-      console.log(formData);
+      await addCompany(formData);
       toast.success("Company created successfully");
-
       onClose();
     } catch (error) {
       toast.error(error.message || "Failed to create company");

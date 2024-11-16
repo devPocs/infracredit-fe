@@ -4,6 +4,7 @@ import Home from "./../pages/Home";
 import Login from "./../pages/Login";
 import User from "./../pages/User";
 import Company from "./../pages/Company";
+import ProjectSites from "./../components/company/ProjectSites";
 import NotFound from "./../pages/NotFound";
 
 const router = createBrowserRouter([
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/company",
         element: <Company />,
+      },
+      {
+        path: "/company/project/:projectId/sites",
+        element: <ProjectSites />,
       },
       {
         path: "*",
