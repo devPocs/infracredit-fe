@@ -6,9 +6,12 @@ export const CompanyContext = createContext();
 
 export const CompanyProvider = ({ children }) => {
   const [companies, setCompanies] = useState([]);
+  const [project, setProject] = useState([]);
 
   return (
-    <CompanyContext.Provider value={{ companies, setCompanies }}>
+    <CompanyContext.Provider
+      value={{ companies, setCompanies, project, setProject }}
+    >
       {children}
     </CompanyContext.Provider>
   );

@@ -1,25 +1,35 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useCompany } from "../../features/company/hooks/useCompany";
+import { toast } from "react-toastify";
+import { useLoading } from "../../features/loader/hooks/useLoading";
 
-const CreateProject = ({ onClose, onSubmit }) => {
-  const [projectName, setProjectName] = useState("");
+const CreateProject = ({ onClose, companies }) => {
+  const { setIsLoading } = useLoading();
   const [selectedCompany, setSelectedCompany] = useState("");
 
-  const companies = [
-    { id: "tytech", name: "Tytech" },
-    { id: "mactech", name: "Mactech" },
-    { id: "jotech", name: "Jotech" },
-  ];
-
-  const handleFormSubmit = (e) => {
+  const { addProject } = useCompany();
+  const [projectName, setProjectName] = useState("");
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    onSubmit({ projectName, companyId: selectedCompany });
+    const projectData = { name: projectName, companyId: selectedCompany };
+    setIsLoading(true);
+
+    try {
+      await addProject(projectData);
+      toast.success("Project added successfully!");
+
+      onClose();
+    } catch (error) {
+      toast.error(error.message || "Failed to add project!");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 p-2 sm:p-4">
       <div className="xs:max-w-xs relative w-full max-w-[280px] rounded-lg bg-white p-3 shadow-lg sm:max-w-md sm:p-4 md:p-6">
-        {/* Simplified Close Button */}
         <button
           onClick={onClose}
           className="absolute right-2 top-2 flex h-8 w-8 cursor-pointer items-center justify-center text-2xl text-gray-500"
@@ -44,9 +54,10 @@ const CreateProject = ({ onClose, onSubmit }) => {
               <option value="" disabled>
                 Select a company
               </option>
+              {/* eslint-disable-next-line react/prop-types */}
               {companies.map((company) => (
                 <option key={company.id} value={company.id}>
-                  {company.name}
+                  {company.companyName}
                 </option>
               ))}
             </select>
@@ -79,7 +90,7 @@ const CreateProject = ({ onClose, onSubmit }) => {
 
 CreateProject.propTypes = {
   onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
+  companies: PropTypes.array.isRequired,
 };
 
 export default CreateProject;

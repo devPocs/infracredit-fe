@@ -2,10 +2,14 @@ import { useState } from "react";
 import DataTable from "./../components/DataTable";
 import CreateCompany from "./../components/forms/CreateCompany";
 import CreateProject from "./../components/forms/CreateProject";
-// import { useCompany } from "./../features/hooks/useCompany";
+import { useNavigate } from "react-router-dom";
+import { useCompany } from "./../features/company/hooks/useCompany";
 
 const User = () => {
-  // const { companies } = useCompany();
+  const { companies } = useCompany();
+  console.log("hey", companies);
+  const navigate = useNavigate();
+
   const [isCreateCompanyOpen, setIsCreateCompanyOpen] = useState(false);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
 
@@ -54,15 +58,68 @@ const User = () => {
   const handleCreateProjectClose = () => setIsCreateProjectOpen(false);
 
   const handleRowDoubleClick = (row) => {
-    // Navigate to company page - implement based on your routing solution
+    // Navigate to company page -
     console.log("Navigating to company:", row.id);
     // Example: window.location.href = `/company/${row.id}`;
     // Or use your routing library's navigation method
   };
 
+  const handleCompaniesClick = () => {
+    const companiesData = sampleCompanyData.map((company) => ({
+      name: company.name,
+      capex: company.capex,
+      pvCapacity: company.pvCapacity,
+      numberOfMeters: company.totalSites * 3, // This is dummy data, replace with actual
+    }));
+
+    navigate("user/more-data", {
+      state: {
+        type: "companies",
+        data: companiesData,
+      },
+    });
+  };
+
+  const handleProjectsClick = () => {
+    const projectsData = [
+      {
+        sn: 1,
+        projectName: "Solar Power Installation",
+        numberOfSites: 3,
+        capex: 75000000,
+        totalPVCapacity: 450,
+      },
+    ];
+
+    navigate("user/more-data", {
+      state: {
+        type: "projects",
+        data: projectsData,
+      },
+    });
+  };
+
+  const handleSitesClick = () => {
+    const sitesData = [
+      {
+        projectName: "Solar Power Installation",
+        siteName: "Site A",
+        capex: 25000000,
+        batteryCapacity: 200,
+        numberOfMeters: 5,
+      },
+    ];
+
+    navigate("user/more-data", {
+      state: {
+        type: "sites",
+        data: sitesData,
+      },
+    });
+  };
+
   return (
     <div className="p-3 sm:p-4 md:p-6 lg:p-8">
-      {/* Header */}
       <div className="mb-4 flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center sm:gap-4 md:mb-6">
         <div className="text-lg font-bold text-navy sm:text-xl lg:text-2xl">
           User Dashboard
@@ -89,13 +146,19 @@ const User = () => {
           Companies Overview
         </h2>
         <div className="grid gap-3 text-white sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
-          <div className="rounded border bg-mint p-3 text-sm shadow sm:p-4 sm:text-base">
+          <div
+            onClick={handleCompaniesClick}
+            className="cursor-pointer rounded border bg-mint p-3 text-sm shadow hover:opacity-90 sm:p-4 sm:text-base"
+          >
             <h3 className="mb-2 font-medium">Total Companies</h3>
             <p className="text-xl font-bold sm:text-2xl">
               {sampleCompanyData.length}
             </p>
           </div>
-          <div className="rounded border bg-sunset p-3 text-sm shadow sm:p-4 sm:text-base">
+          <div
+            onClick={handleProjectsClick}
+            className="cursor-pointer rounded border bg-sunset p-3 text-sm shadow hover:opacity-90 sm:p-4 sm:text-base"
+          >
             <h3 className="mb-2 font-medium">Total Projects</h3>
             <p className="text-xl font-bold sm:text-2xl">
               {sampleCompanyData.reduce(
@@ -104,7 +167,10 @@ const User = () => {
               )}
             </p>
           </div>
-          <div className="rounded border bg-lagoon p-3 text-sm shadow sm:p-4 sm:text-base">
+          <div
+            onClick={handleSitesClick}
+            className="cursor-pointer rounded border bg-lagoon p-3 text-sm shadow hover:opacity-90 sm:p-4 sm:text-base"
+          >
             <h3 className="mb-2 font-medium">Total Sites</h3>
             <p className="text-xl font-bold sm:text-2xl">
               {sampleCompanyData.reduce(
@@ -134,7 +200,7 @@ const User = () => {
         </h2>
         <DataTable
           columns={columns}
-          data={sampleCompanyData}
+          data={companies}
           onRowDoubleClick={handleRowDoubleClick}
         />
       </div>
@@ -146,10 +212,7 @@ const User = () => {
       {isCreateProjectOpen && (
         <CreateProject
           onClose={handleCreateProjectClose}
-          onSubmit={(formData) => {
-            console.log("Project Created:", formData);
-            setIsCreateProjectOpen(false);
-          }}
+          companies={companies}
         />
       )}
     </div>

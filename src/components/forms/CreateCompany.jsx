@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import { useLoading } from "../../features/loader/hooks/useLoading";
 import { toast } from "react-toastify";
-import { useCompany } from "../../features/hooks/useCompany";
+import { useCompany } from "../../features/company/hooks/useCompany";
 
 const CreateCompanyForm = ({ onClose }) => {
   const { setIsLoading } = useLoading();
