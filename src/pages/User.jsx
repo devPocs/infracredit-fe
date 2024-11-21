@@ -7,48 +7,53 @@ import { useCompany } from "./../features/company/hooks/useCompany";
 
 const User = () => {
   const { companies } = useCompany();
-  console.log("hey", companies);
+
+  const transformCompanyData = (companies) => {
+    return companies.map((company) => ({
+      companyName: company.companyName,
+      totalProjects: company.projects?.length || 0,
+      totalSites: company.projects?.reduce(
+        (total, project) => total + (project.sites?.length || 0),
+        0,
+      ),
+      pvCapacity: company.projects?.reduce(
+        (total, project) =>
+          total +
+          (project.sites?.reduce(
+            (siteTotal, site) => siteTotal + (site?.pvCapacity || 0),
+            0,
+          ) || 0),
+        0,
+      ),
+      capex: (
+        company.projects?.reduce(
+          (total, project) =>
+            total +
+            (project.sites?.reduce(
+              (siteTotal, site) => siteTotal + (site?.capex || 0),
+              0,
+            ) || 0),
+          0,
+        ) / 1000000000
+      ).toFixed(2),
+    }));
+  };
+
   const navigate = useNavigate();
 
   const [isCreateCompanyOpen, setIsCreateCompanyOpen] = useState(false);
   const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
 
-  const sampleCompanyData = [
-    {
-      id: 1,
-      name: "Lekki Solar Power Co.",
-      totalProjects: 15,
-      totalSites: 25,
-      pvCapacity: "150",
-      capex: "2.5",
-    },
-    {
-      id: 2,
-      name: "Ikeja Renewable Energy Co.",
-      totalProjects: 8,
-      totalSites: 12,
-      pvCapacity: "80",
-      capex: "1.2",
-    },
-    {
-      id: 3,
-      name: "Power Merch Co.",
-      totalProjects: 12,
-      totalSites: 18,
-      pvCapacity: "120",
-      capex: "1.8",
-    },
-  ];
-
   const columns = [
-    { header: "Company Name", accessor: "name" },
+    { header: "Id", accessor: "id" },
+    { header: "Company Name", accessor: "companyName" },
     { header: "Number of Projects", accessor: "totalProjects" },
     { header: "Number of Sites", accessor: "totalSites" },
     { header: "Total PV Capacity", accessor: "pvCapacity" },
     {
       header: "Total Capex (Billions)",
       accessor: "capex",
-      cell: (value) => `N${value}B`,
+      cell: (value) => `₦${value}B`,
     },
   ];
 
@@ -65,8 +70,9 @@ const User = () => {
   };
 
   const handleCompaniesClick = () => {
-    const companiesData = sampleCompanyData.map((company) => ({
-      name: company.name,
+    const companiesData = companies.map((company) => ({
+      id: company.id,
+      name: company.companyName,
       capex: company.capex,
       pvCapacity: company.pvCapacity,
       numberOfMeters: company.totalSites * 3, // This is dummy data, replace with actual
@@ -151,9 +157,7 @@ const User = () => {
             className="cursor-pointer rounded border bg-mint p-3 text-sm shadow hover:opacity-90 sm:p-4 sm:text-base"
           >
             <h3 className="mb-2 font-medium">Total Companies</h3>
-            <p className="text-xl font-bold sm:text-2xl">
-              {sampleCompanyData.length}
-            </p>
+            <p className="text-xl font-bold sm:text-2xl">{companies.length}</p>
           </div>
           <div
             onClick={handleProjectsClick}
@@ -161,10 +165,9 @@ const User = () => {
           >
             <h3 className="mb-2 font-medium">Total Projects</h3>
             <p className="text-xl font-bold sm:text-2xl">
-              {sampleCompanyData.reduce(
-                (sum, company) => sum + company.totalProjects,
-                0,
-              )}
+              {companies.reduce((total, company) => {
+                return total + (company.projects?.length || 0);
+              }, 0)}
             </p>
           </div>
           <div
@@ -173,20 +176,18 @@ const User = () => {
           >
             <h3 className="mb-2 font-medium">Total Sites</h3>
             <p className="text-xl font-bold sm:text-2xl">
-              {sampleCompanyData.reduce(
-                (sum, company) => sum + company.totalSites,
-                0,
-              )}
+              {companies.reduce((total, company) => {
+                return total + (company.projects?.sites?.length || 0);
+              }, 0)}
             </p>
           </div>
           <div className="rounded border bg-navy p-3 text-sm shadow sm:p-4 sm:text-base">
             <h3 className="mb-2 font-medium">Total Capex(in billions)</h3>
             <p className="text-xl font-bold sm:text-2xl">
-              N
-              {sampleCompanyData.reduce(
-                (sum, company) => sum + parseFloat(company.capex),
-                0,
-              )}
+              ₦{" "}
+              {companies.reduce((sum, company) => {
+                return sum + (company.projects?.sites?.capex || 0);
+              }, 0)}
               B
             </p>
           </div>
@@ -200,7 +201,7 @@ const User = () => {
         </h2>
         <DataTable
           columns={columns}
-          data={companies}
+          data={transformCompanyData(companies)}
           onRowDoubleClick={handleRowDoubleClick}
         />
       </div>
@@ -220,3 +221,30 @@ const User = () => {
 };
 
 export default User;
+
+// const sampleCompanyData = [
+//   {
+//     id: 1,
+//     name: "Lekki Solar Power Co.",
+//     totalProjects: 15,
+//     totalSites: 25,
+//     pvCapacity: "150",
+//     capex: "2.5",
+//   },
+//   {
+//     id: 2,
+//     name: "Ikeja Renewable Energy Co.",
+//     totalProjects: 8,
+//     totalSites: 12,
+//     pvCapacity: "80",
+//     capex: "1.2",
+//   },
+//   {
+//     id: 3,
+//     name: "Power Merch Co.",
+//     totalProjects: 12,
+//     totalSites: 18,
+//     pvCapacity: "120",
+//     capex: "1.8",
+//   },
+// ];

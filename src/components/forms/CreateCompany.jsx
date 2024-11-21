@@ -11,29 +11,40 @@ const CreateCompanyForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     companyName: "",
     projectName: "",
-    primaryContact: { firstName: "", lastName: "", email: "", phoneNumber: "" },
+  });
+
+  const [contactInputs, setContactInputs] = useState({
+    primaryContact: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      contactType: 1,
+    },
     secondaryContact: {
       firstName: "",
       lastName: "",
       email: "",
       phoneNumber: "",
+      contactType: 2,
     },
     tertiaryContact: {
       firstName: "",
       lastName: "",
       email: "",
       phoneNumber: "",
+      contactType: 3,
     },
   });
 
   const handleInputChange = (e, contactType, field) => {
-    setFormData({
-      ...formData,
+    setContactInputs((prev) => ({
+      ...prev,
       [contactType]: {
-        ...formData[contactType],
+        ...prev[contactType],
         [field]: e.target.value,
       },
-    });
+    }));
   };
 
   const handleFormSubmit = async (e) => {
@@ -41,7 +52,26 @@ const CreateCompanyForm = ({ onClose }) => {
     setIsLoading(true);
 
     try {
-      await addCompany(formData);
+      const companyContact = Object.values(contactInputs)
+        .filter(
+          (contact) =>
+            contact.firstName || contact.email || contact.phoneNumber,
+        )
+        .map(({ firstName, lastName, email, phoneNumber, contactType }) => ({
+          firstName,
+          lastName,
+          phoneNumber,
+          email,
+          contactType,
+        }));
+
+      const apiData = {
+        companyName: formData.companyName,
+        projectName: formData.projectName,
+        companyContact,
+      };
+
+      await addCompany(apiData);
       toast.success("Company created successfully");
       onClose();
     } catch (error) {
@@ -109,7 +139,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="text"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.primaryContact.firstName}
+                    value={contactInputs.primaryContact.firstName}
                     onChange={(e) =>
                       handleInputChange(e, "primaryContact", "firstName")
                     }
@@ -123,7 +153,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="text"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.primaryContact.lastName}
+                    value={contactInputs.primaryContact.lastName}
                     onChange={(e) =>
                       handleInputChange(e, "primaryContact", "lastName")
                     }
@@ -137,7 +167,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="email"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.primaryContact.email}
+                    value={contactInputs.primaryContact.email}
                     onChange={(e) =>
                       handleInputChange(e, "primaryContact", "email")
                     }
@@ -151,7 +181,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="tel"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.primaryContact.phoneNumber}
+                    value={contactInputs.primaryContact.phoneNumber}
                     onChange={(e) =>
                       handleInputChange(e, "primaryContact", "phoneNumber")
                     }
@@ -172,7 +202,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="text"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.secondaryContact.firstName}
+                    value={contactInputs.secondaryContact.firstName}
                     onChange={(e) =>
                       handleInputChange(e, "secondaryContact", "firstName")
                     }
@@ -185,7 +215,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="text"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.secondaryContact.lastName}
+                    value={contactInputs.secondaryContact.lastName}
                     onChange={(e) =>
                       handleInputChange(e, "secondaryContact", "lastName")
                     }
@@ -198,7 +228,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="email"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.secondaryContact.email}
+                    value={contactInputs.secondaryContact.email}
                     onChange={(e) =>
                       handleInputChange(e, "secondaryContact", "email")
                     }
@@ -211,7 +241,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="tel"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.secondaryContact.phoneNumber}
+                    value={contactInputs.secondaryContact.phoneNumber}
                     onChange={(e) =>
                       handleInputChange(e, "secondaryContact", "phoneNumber")
                     }
@@ -231,7 +261,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="text"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.tertiaryContact.firstName}
+                    value={contactInputs.tertiaryContact.firstName}
                     onChange={(e) =>
                       handleInputChange(e, "tertiaryContact", "firstName")
                     }
@@ -244,7 +274,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="text"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.tertiaryContact.lastName}
+                    value={contactInputs.tertiaryContact.lastName}
                     onChange={(e) =>
                       handleInputChange(e, "tertiaryContact", "lastName")
                     }
@@ -257,7 +287,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="email"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.tertiaryContact.email}
+                    value={contactInputs.tertiaryContact.email}
                     onChange={(e) =>
                       handleInputChange(e, "tertiaryContact", "email")
                     }
@@ -270,7 +300,7 @@ const CreateCompanyForm = ({ onClose }) => {
                   <input
                     type="tel"
                     className="w-full rounded-md border px-3 py-2 text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-                    value={formData.tertiaryContact.phoneNumber}
+                    value={contactInputs.tertiaryContact.phoneNumber}
                     onChange={(e) =>
                       handleInputChange(e, "tertiaryContact", "phoneNumber")
                     }
