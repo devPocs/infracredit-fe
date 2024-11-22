@@ -31,7 +31,7 @@ const router = createBrowserRouter([
         element: <MoreData />,
       },
       {
-        path: "/company",
+        path: "/company/:id",
         element: <Company />,
       },
       {

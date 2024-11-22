@@ -1,6 +1,10 @@
 import { useContext, useEffect } from "react";
 import { CompanyContext } from "../contexts/CompanyContext";
-import { getAllCompanies } from "../../../apis/companyApis";
+import {
+  getAllCompanies,
+  getCompanyById,
+  getProjectsByCompanyId,
+} from "../../../apis/companyApis";
 import { useLoading } from "../../loader/hooks/useLoading";
 import { createCompany, createProject } from "../../../apis/userApis";
 
@@ -15,6 +19,29 @@ export const useCompany = () => {
       context.setCompanies(data);
     } catch (error) {
       console.error("Error fetching companies:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const fetchProjectsByCompanyId = async () => {
+    setIsLoading(true);
+    try {
+      const data = await getProjectsByCompanyId();
+      context.setProject(data);
+    } catch (error) {
+      console.error("Error fetching projects:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchCompanyById = async (id) => {
+    setIsLoading(true);
+    try {
+      const data = await getCompanyById(id);
+      context.setCompany(data);
+    } catch (error) {
+      "Error fetching company:", error;
     } finally {
       setIsLoading(false);
     }
@@ -54,5 +81,12 @@ export const useCompany = () => {
     throw new Error("useCompany must be used within CompanyProvider");
   }
 
-  return { ...context, fetchCompanies, addCompany, addProject };
+  return {
+    ...context,
+    fetchCompanies,
+    fetchCompanyById,
+    addCompany,
+    addProject,
+    fetchProjectsByCompanyId,
+  };
 };

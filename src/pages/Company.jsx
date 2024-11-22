@@ -1,16 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Dashboard from "./../components/company/Dashboard";
 import AllProjects from "./../components/company/AllProjects";
+import { useCompany } from "./../features/company/hooks/useCompany";
+import { useParams } from "react-router-dom";
 
 const Company = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
+  const { company, fetchCompanyById, fetchProjectsByCompanyId } = useCompany();
+  const { id } = useParams();
+
+  useEffect(() => {
+    if (id) {
+      fetchCompanyById(id);
+      fetchProjectsByCompanyId(id);
+    }
+  }, [id]);
+
+  if (!company) {
+    return;
+  }
 
   return (
     <div className="p-3 sm:p-4 md:p-6 lg:p-8">
       {/* Company Header */}
       <div className="mb-4 md:mb-6">
         <h1 className="text-lg font-bold sm:text-xl lg:text-2xl">
-          Lekki Solar Power Co.
+          Company Name: {company.companyName}
         </h1>
       </div>
 
@@ -43,7 +58,13 @@ const Company = () => {
       </div>
 
       {/* Tab Content */}
-      <div>{activeTab === "dashboard" ? <Dashboard /> : <AllProjects />}</div>
+      <div>
+        {activeTab === "dashboard" ? (
+          <Dashboard company={company} />
+        ) : (
+          <AllProjects projects={company.projects} />
+        )}
+      </div>
     </div>
   );
 };

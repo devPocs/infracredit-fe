@@ -58,3 +58,32 @@ export const getAllCompanies = async () => {
     throw error;
   }
 };
+
+export const getCompanyById = async (id) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/Company/${id}`);
+    if (!response.ok) {
+      throw new Error("Failed to fetch Company");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching company:", error);
+    throw error;
+  }
+};
+
+export const getProjectsByCompanyId = async (id) => {
+  console.log("id", id);
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/Project/get-projects-by-company-id/${id}`,
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch Project");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching Project:", error);
+    throw error;
+  }
+};

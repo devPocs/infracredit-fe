@@ -1,4 +1,39 @@
-const Dashboard = () => {
+import PropTypes from "prop-types";
+const Dashboard = ({ company }) => {
+  const companyContacts = company?.companyContacts || [];
+
+  const calculateSiteMetrics = (company) => {
+    if (!company || !company.projects)
+      return { totalSites: 0, activeSites: 0, inactiveSites: 0 };
+
+    const totalSites = company.projects.reduce((total, project) => {
+      return total + (project.sites?.length || 0);
+    }, 0);
+
+    const { activeSites, inactiveSites } = company.projects.reduce(
+      (acc, project) => {
+        const activeCount =
+          project.sites?.filter((site) => site.status === "Active").length || 0;
+        const inactiveCount =
+          project.sites?.filter((site) => site.status === "Inactive").length ||
+          0;
+
+        return {
+          activeSites: acc.activeSites + activeCount,
+          inactiveSites: acc.inactiveSites + inactiveCount,
+        };
+      },
+      { activeSites: 0, inactiveSites: 0 },
+    );
+
+    return {
+      totalSites,
+      activeSites,
+      inactiveSites,
+    };
+  };
+
+  const siteMetrics = calculateSiteMetrics(company);
   return (
     <div>
       <div className="mb-6 md:mb-8">
@@ -8,15 +43,21 @@ const Dashboard = () => {
         <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           <div className="border bg-mint p-3 text-sm shadow sm:p-4 sm:text-base">
             <h3 className="mb-2 font-medium text-white">Total Sites</h3>
-            <p className="text-xl font-bold text-white sm:text-2xl">125</p>
+            <p className="text-xl font-bold text-white sm:text-2xl">
+              {siteMetrics.totalSites}
+            </p>
           </div>
           <div className="bg-sunset p-3 text-sm shadow sm:p-4 sm:text-base">
             <h3 className="mb-2 font-medium text-white">Active Sites</h3>
-            <p className="text-xl font-bold text-white sm:text-2xl">98</p>
+            <p className="text-xl font-bold text-white sm:text-2xl">
+              {siteMetrics.activeSites}
+            </p>
           </div>
           <div className="bg-lagoon p-3 text-sm shadow sm:p-4 sm:text-base">
             <h3 className="mb-2 font-medium text-white">Inactive Sites</h3>
-            <p className="text-xl font-bold text-white sm:text-2xl">27</p>
+            <p className="text-xl font-bold text-white sm:text-2xl">
+              {siteMetrics.inactiveSites}
+            </p>
           </div>
         </div>
       </div>
@@ -75,40 +116,39 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 bg-white">
-                <tr>
-                  <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    Primary
-                  </td>
-                  <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    Emmanuel
-                  </td>
-                  <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    Haastrup
-                  </td>
-                  <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    manny@mail.com
-                  </td>
-                  <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    0812345645
-                  </td>
-                </tr>
-                <tr>
-                  <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    Secondary
-                  </td>
-                  <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    Samuel
-                  </td>
-                  <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    Adekoya
-                  </td>
-                  <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    samade@mail.com
-                  </td>
-                  <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
-                    08123456778
-                  </td>
-                </tr>
+                {companyContacts.map((contact) => {
+                  // Dummy names mapping based on contact type
+                  const dummyNames = {
+                    Primary: { firstName: "Matty", lastName: "Barnes" },
+                    Secondary: { firstName: "Olamide", lastName: "Haastrup" },
+                    Tertiary: { firstName: "Naomi", lastName: "Eric" },
+                  };
+
+                  const currentDummyName = dummyNames[contact.contactType] || {
+                    firstName: "Unknown",
+                    lastName: "User",
+                  };
+
+                  return (
+                    <tr key={contact.id}>
+                      <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
+                        {contact.contactType}
+                      </td>
+                      <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
+                        {contact.firstName || currentDummyName.firstName}
+                      </td>
+                      <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
+                        {contact.lastName || currentDummyName.lastName}
+                      </td>
+                      <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
+                        {contact.email}
+                      </td>
+                      <td className="px-3 py-2 text-xs sm:px-4 sm:py-3 sm:text-sm">
+                        {contact.phoneNumber}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -116,6 +156,32 @@ const Dashboard = () => {
       </div>
     </div>
   );
+};
+Dashboard.propTypes = {
+  company: PropTypes.shape({
+    id: PropTypes.number,
+    companyName: PropTypes.string,
+    projects: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        sites: PropTypes.arrayOf(
+          PropTypes.shape({
+            id: PropTypes.number,
+            status: PropTypes.string,
+          }),
+        ),
+      }),
+    ),
+    companyContacts: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        contactType: PropTypes.string,
+        email: PropTypes.string,
+        phoneNumber: PropTypes.string,
+      }),
+    ),
+  }).isRequired,
 };
 
 export default Dashboard;

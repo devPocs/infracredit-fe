@@ -10,6 +10,7 @@ const User = () => {
 
   const transformCompanyData = (companies) => {
     return companies.map((company) => ({
+      id: company.id,
       companyName: company.companyName,
       totalProjects: company.projects?.length || 0,
       totalSites: company.projects?.reduce(
@@ -75,7 +76,7 @@ const User = () => {
       name: company.companyName,
       capex: company.capex,
       pvCapacity: company.pvCapacity,
-      numberOfMeters: company.totalSites * 3, // This is dummy data, replace with actual
+      // numberOfMeters: company.totalSites * 3, // This is dummy data, replace with actual
     }));
 
     navigate("user/more-data", {
