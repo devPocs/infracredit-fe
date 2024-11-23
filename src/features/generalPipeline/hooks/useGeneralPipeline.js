@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
 import { GeneralPipelineContext } from "../contexts/GeneralPipelineContext";
-import { getAllCompaniesGenralPipeline} from "../../../apis/generalPipelineApis";
+import { getAllCompaniesGeneralPipeline } from "../../../apis/generalPipelineApis";
 import { useLoading } from "../../loader/hooks/useLoading";
 
 export const useGeneralPipeline = () => {
@@ -10,10 +10,10 @@ export const useGeneralPipeline = () => {
   const fetchPipeline = async () => {
     setIsLoading(true);
     try {
-      const data = await getAllCompaniesGenralPipeline();
-      context.setPipline(data);
+      const data = await getAllCompaniesGeneralPipeline();
+      context.setPipeline(data);
     } catch (error) {
-      console.error('Error the pipeline:', error);
+      console.error("Error the pipeline:", error);
     } finally {
       setIsLoading(false);
     }

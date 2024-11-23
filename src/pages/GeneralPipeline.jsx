@@ -1,14 +1,16 @@
 import { useMemo } from "react";
 import DataTable from "./../components/DataTable";
 import { useNavigate } from "react-router-dom";
+import { useGeneralPipeline } from "../features/generalPipeline/hooks/useGeneralPipeline";
 
 const GeneralPipeline = ({ pipelineData }) => {
   const navigate = useNavigate();
+  const { pipeline } = useGeneralPipeline();
 
   // Transform data for the main company table
   const companyTableData = useMemo(
     () =>
-      pipelineData?.map((company) => {
+      pipeline?.map((company) => {
         const totals = company.projects.reduce(
           (acc, project) => ({
             totalPvCapacity:
@@ -28,16 +30,16 @@ const GeneralPipeline = ({ pipelineData }) => {
         );
 
         return {
+          Id: company.companyId,
           companyName: company.companyName,
-          companyId: company.companyId,
-          projectCount: company.projectCount,
+          totalprojects: company.projectCount,
           totalPvCapacity: totals.totalPvCapacity,
           totalBatteryCapacity: totals.totalBatteryCapacity,
           totalMeters: totals.totalMeters,
           totalSize: totals.totalSize,
         };
       }) || [],
-    [pipelineData],
+    [pipeline],
   );
 
   const companyColumns = [
@@ -67,12 +69,13 @@ const GeneralPipeline = ({ pipelineData }) => {
     {
       header: "Size (₦ Billion)",
       accessor: "totalSize",
-      cell: (value) => `₦${(value / 1000000000).toFixed(2)}B`,
+      cell: (value) => `₦${value}B`,
     },
   ];
 
   const handleRowClick = (row) => {
-    navigate(`/company/${row.company.id}`);
+    console.log(row);
+    navigate(`/company/${row.Id}`);
   };
 
   return (
@@ -82,9 +85,6 @@ const GeneralPipeline = ({ pipelineData }) => {
         <h1 className="text-2xl font-bold text-gray-900">
           General Pipeline Overview
         </h1>
-        <p className="mt-2 text-sm text-gray-600">
-          Overview of all companies and their projects
-        </p>
       </div>
 
       {/* Summary Cards */}
@@ -92,13 +92,13 @@ const GeneralPipeline = ({ pipelineData }) => {
         <div className="rounded-lg bg-white p-4 shadow">
           <h3 className="text-sm font-medium text-gray-500">Total Companies</h3>
           <p className="mt-2 text-2xl font-semibold text-gray-900">
-            {pipelineData?.length || 0}
+            {pipeline?.length || 0}
           </p>
         </div>
         <div className="rounded-lg bg-white p-4 shadow">
           <h3 className="text-sm font-medium text-gray-500">Total Projects</h3>
           <p className="mt-2 text-2xl font-semibold text-gray-900">
-            {pipelineData?.reduce(
+            {pipeline?.reduce(
               (acc, company) => acc + company.projectCount,
               0,
             ) || 0}
@@ -118,24 +118,21 @@ const GeneralPipeline = ({ pipelineData }) => {
         <div className="rounded-lg bg-white p-4 shadow">
           <h3 className="text-sm font-medium text-gray-500">Total Size</h3>
           <p className="mt-2 text-2xl font-semibold text-gray-900">
-            ₦
-            {(
-              companyTableData.reduce(
-                (acc, company) => acc + company.totalSize,
-                0,
-              ) / 1000000000
-            ).toFixed(2)}
+            ₦{" "}
+            {companyTableData.reduce(
+              (acc, company) => acc + company.totalSize,
+              0,
+            )}
             B
           </p>
         </div>
       </div>
 
-      {/* Company Table */}
       <div className="rounded-lg bg-white shadow">
         <DataTable
           columns={companyColumns}
           data={companyTableData}
-          onRowClick={handleRowClick}
+          onRowDoubleClick={handleRowClick}
         />
       </div>
     </div>

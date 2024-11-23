@@ -1,10 +1,11 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { stateAndLGA } from "./../../data";
 
 const CreateSite = ({ onClose }) => {
   const [formData, setFormData] = useState({
-    localGovernment: "",
     state: "",
+    localGovernment: "",
     sector: "",
     capex: 0,
     pvCapacitykWp: 0,
@@ -29,14 +30,23 @@ const CreateSite = ({ onClose }) => {
     months: 0,
   });
 
+  const states = stateAndLGA.map((item) => item.state);
+
+  // Get LGAs for selected state
+  const getLGAs = (stateName) => {
+    const stateData = stateAndLGA.find((item) => item.state === stateName);
+    return stateData ? stateData.lgas : [];
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+      // Reset LGA if state changes
+      ...(name === "state" ? { localGovernment: "" } : {}),
     }));
   };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
@@ -70,27 +80,45 @@ const CreateSite = ({ onClose }) => {
             {/* Column 1 */}
             <div className="space-y-4">
               <div>
-                <label className="mb-1 block text-sm font-medium">
-                  Local Government
-                </label>
-                <input
-                  type="text"
-                  name="localGovernment"
-                  value={formData.localGovernment}
-                  onChange={handleChange}
-                  className="w-full rounded border p-2"
-                />
-              </div>
-              <div>
                 <label className="mb-1 block text-sm font-medium">State</label>
-                <input
-                  type="text"
+                <select
                   name="state"
                   value={formData.state}
                   onChange={handleChange}
                   className="w-full rounded border p-2"
-                />
+                  required
+                >
+                  <option value="">Select State</option>
+                  {states.map((state) => (
+                    <option key={state} value={state}>
+                      {state}
+                    </option>
+                  ))}
+                </select>
               </div>
+
+              <div>
+                <label className="mb-1 block text-sm font-medium">
+                  Local Government
+                </label>
+                <select
+                  name="localGovernment"
+                  value={formData.localGovernment}
+                  onChange={handleChange}
+                  className="w-full rounded border p-2"
+                  disabled={!formData.state}
+                  required
+                >
+                  <option value="">Select LGA</option>
+                  {formData.state &&
+                    getLGAs(formData.state).map((lga) => (
+                      <option key={lga} value={lga}>
+                        {lga}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
               <div>
                 <label className="mb-1 block text-sm font-medium">Sector</label>
                 <input

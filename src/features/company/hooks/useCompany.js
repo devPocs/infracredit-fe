@@ -73,6 +73,19 @@ export const useCompany = () => {
     }
   };
 
+  const addSite = async (siteData) => {
+    setIsLoading(true);
+    try {
+      const newSite = await createSite(siteData);
+      context.setSite((prevSites) => [...prevSites, newSite]);
+    } catch (error) {
+      console.error("Error adding site:", error);
+      throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchCompanies();
   }, []);
@@ -81,12 +94,20 @@ export const useCompany = () => {
     throw new Error("useCompany must be used within CompanyProvider");
   }
 
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
+
+  if (!context) {
+    throw new Error("useCompany must be used within CompanyProvider");
+  }
   return {
     ...context,
     fetchCompanies,
     fetchCompanyById,
     addCompany,
     addProject,
+    addSite,
     fetchProjectsByCompanyId,
   };
 };

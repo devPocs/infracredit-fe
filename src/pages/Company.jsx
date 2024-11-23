@@ -62,7 +62,10 @@ const Company = () => {
         {activeTab === "dashboard" ? (
           <Dashboard company={company} />
         ) : (
-          <AllProjects projects={company.projects} />
+          <AllProjects
+            projects={company.projects}
+            companyName={company.companyName}
+          />
         )}
       </div>
     </div>

@@ -9,7 +9,8 @@ import SiteDetails from "./../company/SiteDetails";
 const ProjectSites = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { sites, projectName } = location.state;
+  const { sites, projectName, companyName } = location.state;
+  console.log("projectName", projectName);
 
   const [isCreateSiteOpen, setIsCreateSiteOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -77,9 +78,7 @@ const ProjectSites = () => {
         <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
           <div className="rounded border p-3 text-sm shadow sm:p-4 sm:text-base">
             <span className="">Company:</span>{" "}
-            <span className="font-semibold text-navy">
-              Lekki Solar Power Co.
-            </span>
+            <span className="font-semibold text-navy">{companyName}</span>
           </div>
           <div className="rounded border p-3 text-sm shadow sm:p-4 sm:text-base">
             <span className="">Project:</span>{" "}
@@ -161,6 +160,7 @@ const ProjectSites = () => {
 ProjectSites.propTypes = {
   sites: PropTypes.arrayOf(PropTypes.object).isRequired,
   projectName: PropTypes.string.isRequired,
+  companyName: PropTypes.string.isRequired,
   onBack: PropTypes.func.isRequired,
 };
 
