@@ -2,7 +2,7 @@ import DataTable from "./../DataTable";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const AllProjects = ({ projects, companyName }) => {
+const AllProjects = ({ projects, companyName, companyId }) => {
   const calculateProjectMetrics = (projects) => {
     if (!projects || !Array.isArray(projects)) {
       return {
@@ -83,6 +83,8 @@ const AllProjects = ({ projects, companyName }) => {
         sites: fullProject.sites,
         projectName: fullProject.name,
         companyName: companyName,
+        projectCode: fullProject.projectCode,
+        companyId: companyId,
       },
     });
   };

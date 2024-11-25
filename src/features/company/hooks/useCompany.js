@@ -4,9 +4,11 @@ import {
   getAllCompanies,
   getCompanyById,
   getProjectsByCompanyId,
+  getSites,
 } from "../../../apis/companyApis";
 import { useLoading } from "../../loader/hooks/useLoading";
 import { createCompany, createProject } from "../../../apis/userApis";
+import { createSite } from "../../../apis/companyApis";
 
 export const useCompany = () => {
   const context = useContext(CompanyContext);
@@ -73,14 +75,26 @@ export const useCompany = () => {
     }
   };
 
-  const addSite = async (siteData) => {
+  const addSite = async (projectCode, formData) => {
     setIsLoading(true);
     try {
-      const newSite = await createSite(siteData);
+      const newSite = await createSite(projectCode, formData);
       context.setSite((prevSites) => [...prevSites, newSite]);
     } catch (error) {
       console.error("Error adding site:", error);
       throw error;
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchSites = async (projectCode) => {
+    setIsLoading(true);
+    try {
+      const data = await getSites(projectCode);
+      context.setSites(data);
+    } catch (error) {
+      "Error fetching company:", error;
     } finally {
       setIsLoading(false);
     }
@@ -94,13 +108,6 @@ export const useCompany = () => {
     throw new Error("useCompany must be used within CompanyProvider");
   }
 
-  useEffect(() => {
-    fetchCompanies();
-  }, []);
-
-  if (!context) {
-    throw new Error("useCompany must be used within CompanyProvider");
-  }
   return {
     ...context,
     fetchCompanies,
@@ -108,6 +115,7 @@ export const useCompany = () => {
     addCompany,
     addProject,
     addSite,
+    fetchSites,
     fetchProjectsByCompanyId,
   };
 };

@@ -73,7 +73,6 @@ export const getCompanyById = async (id) => {
 };
 
 export const getProjectsByCompanyId = async (id) => {
-  console.log("id", id);
   try {
     const response = await fetch(
       `${API_BASE_URL}/api/Project/get-projects-by-company-id/${id}`,
@@ -84,6 +83,72 @@ export const getProjectsByCompanyId = async (id) => {
     return await response.json();
   } catch (error) {
     console.error("Error fetching Project:", error);
+    throw error;
+  }
+};
+
+export const createSite = async (projectCode, formData) => {
+  console.log("projectCode =", projectCode);
+  try {
+    console.log("Creating site with payload:", formData);
+    const response = await fetch(
+      `${API_BASE_URL}/api/Site/${projectCode}/createSite`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      },
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to create site");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error creating site:", error);
+    throw error;
+  }
+};
+
+export const getSites = async (projectCode) => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/Site/${projectCode}/sites`,
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch Sites");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching Sites:", error);
+    throw error;
+  }
+};
+
+export const updateSite = async (siteId, formData) => {
+  console.log("siteId =", siteId);
+  try {
+    console.log("Updating site with payload:", formData);
+    const response = await fetch(`${API_BASE_URL}/api/Site/${siteId}/update`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Failed to update site");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating site:", error);
     throw error;
   }
 };

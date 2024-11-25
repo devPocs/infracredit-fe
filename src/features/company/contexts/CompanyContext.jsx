@@ -10,6 +10,7 @@ export const CompanyProvider = ({ children }) => {
   const [project, setProject] = useState([]);
   const [projects, setProjects] = useState([]);
   const [site, setSite] = useState([]);
+  const [sites, setSites] = useState([]);
 
   return (
     <CompanyContext.Provider
@@ -24,6 +25,8 @@ export const CompanyProvider = ({ children }) => {
         setProjects,
         site,
         setSite,
+        sites,
+        setSites,
       }}
     >
       {children}

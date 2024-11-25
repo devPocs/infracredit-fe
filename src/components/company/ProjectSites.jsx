@@ -9,8 +9,8 @@ import SiteDetails from "./../company/SiteDetails";
 const ProjectSites = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { sites, projectName, companyName } = location.state;
-  console.log("projectName", projectName);
+  const { sites, projectName, companyName, projectCode, companyId } =
+    location.state;
 
   const [isCreateSiteOpen, setIsCreateSiteOpen] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -141,7 +141,13 @@ const ProjectSites = () => {
       </div>
 
       {/* Modals */}
-      {isCreateSiteOpen && <CreateSite onClose={handleCreateSiteClose} />}
+      {isCreateSiteOpen && (
+        <CreateSite
+          onClose={handleCreateSiteClose}
+          projectCode={projectCode}
+          companyId={companyId}
+        />
+      )}
       {isDetailsOpen && selectedSite && (
         <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50">
           <div className="min-h-screen px-4 py-6">
@@ -149,6 +155,7 @@ const ProjectSites = () => {
               site={selectedSite}
               onBack={handleDetailsClose}
               projectName={projectName}
+              projectId={projectCode}
             />
           </div>
         </div>

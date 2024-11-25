@@ -65,6 +65,7 @@ const Company = () => {
           <AllProjects
             projects={company.projects}
             companyName={company.companyName}
+            companyId={id}
           />
         )}
       </div>

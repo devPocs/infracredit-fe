@@ -64,11 +64,8 @@ const User = () => {
   const handleCreateProjectClose = () => setIsCreateProjectOpen(false);
 
   const handleRowDoubleClick = (row) => {
-    // Navigate to company page -
-    navigate(`/company/row.id`);
+    navigate(`/company/${row.id}`);
     console.log("Navigating to company:", row.id);
-    // Example: window.location.href = `/company/${row.id}`;
-    // Or use your routing library's navigation method
   };
 
   const handleCompaniesClick = () => {

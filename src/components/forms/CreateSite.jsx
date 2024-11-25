@@ -1,8 +1,16 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { stateAndLGA } from "./../../data";
+import { useLoading } from "./../../features/loader/hooks/useLoading";
+import { useNavigate } from "react-router-dom";
+import { useCompany } from "../../features/company/hooks/useCompany";
+import { toast } from "react-toastify";
 
-const CreateSite = ({ onClose }) => {
+const CreateSite = ({ onClose, projectCode, companyId }) => {
+  const { addSite, fetchCompanyById } = useCompany();
+  const { setIsLoading } = useLoading();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     state: "",
     localGovernment: "",
@@ -47,10 +55,20 @@ const CreateSite = ({ onClose }) => {
       ...(name === "state" ? { localGovernment: "" } : {}),
     }));
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    onClose();
+    try {
+      setIsLoading(true);
+      await addSite(projectCode, formData);
+      await fetchCompanyById(companyId);
+      toast.success("Site added successfully!");
+      navigate(`/company/${companyId}`);
+      onClose();
+    } catch (error) {
+      toast.error(error.message || "Failed to add site!");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -377,13 +395,18 @@ const CreateSite = ({ onClose }) => {
               </div>
               <div>
                 <label className="mb-1 block text-sm font-medium">Months</label>
-                <input
-                  type="text"
+                <select
                   name="months"
                   value={formData.months}
                   onChange={handleChange}
                   className="w-full rounded border p-2"
-                />
+                  required
+                >
+                  <option value="">Select Duration</option>
+                  <option value={12}>12 Months</option>
+                  <option value={24}>24 Months</option>
+                  <option value={36}>36 Months</option>
+                </select>
               </div>
             </div>
           </div>

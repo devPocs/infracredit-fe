@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
+import { toast } from "react-toastify";
+import { updateSite } from "../../apis/companyApis";
 // import { HiOutlineBolt } from "react-icons/hi";
 import {
   BsCalendarEvent,
@@ -9,7 +11,7 @@ import {
   BsPencil,
 } from "react-icons/bs";
 
-const SiteDetails = ({ site, onBack, projectName }) => {
+const SiteDetails = ({ site, onBack, projectName, projectId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [formData, setFormData] = useState({
@@ -41,6 +43,7 @@ const SiteDetails = ({ site, onBack, projectName }) => {
 
   useEffect(() => {
     if (site) {
+      console.log(site.id);
       setFormData(site);
     }
   }, [site]);
@@ -60,12 +63,22 @@ const SiteDetails = ({ site, onBack, projectName }) => {
     });
   };
 
-  const handleUpdate = (e) => {
+  const handleUpdate = async (e) => {
     e.preventDefault();
-    console.log("Updated data:", formData);
     setIsEditing(false);
     setHasChanges(false);
-    // API call would go here
+    try {
+      const updatedFormData = {
+        ...formData,
+        projectId: projectId,
+      };
+      await updateSite(site.id, updatedFormData);
+      toast.success("Site updated successfully");
+      onBack();
+    } catch (error) {
+      toast.error(error.message || "Failed to update site");
+      console.error("Error updating site:", error);
+    }
   };
 
   const handleCancel = () => {
