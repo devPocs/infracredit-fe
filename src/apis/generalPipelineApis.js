@@ -1,4 +1,6 @@
-const API_BASE_URL = "https://localhost:7140";
+//const API_BASE_URL = "https://localhost:7140";
+const API_BASE_URL =
+  "https://capexpipelineapi-g2g8gygxghcxc2hz.eastus-01.azurewebsites.net";
 
 export const getCompanyGeneralPipeline = async (id) => {
   try {
