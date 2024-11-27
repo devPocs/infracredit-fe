@@ -2,7 +2,7 @@ import { FaUser, SiJfrogpipelines } from "./../icons/index.js";
 import { Link } from "react-router-dom";
 import logo from "./../assets/logo.jpg";
 
-const NavBar = () => {
+const Nav = () => {
   return (
     <nav className="flex items-center justify-between bg-white p-4 shadow-md md:p-6 lg:px-10">
       <div className="h-10 md:h-16">
@@ -39,4 +39,4 @@ const NavBar = () => {
   );
 };
 
-export default NavBar;
+export default Nav;
