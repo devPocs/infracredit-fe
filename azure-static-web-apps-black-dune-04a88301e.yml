@@ -23,7 +23,17 @@ jobs:
       - group: Azure-Static-Web-Apps-black-dune-04a88301e-variable-group
     steps:
       - checkout: self
+        fetchDepth: 0
         submodules: true
+
+      - task: SonarCloudPrepare@3
+        inputs:
+          SonarQube: 'capexpipeline'
+          organization: 'infralab'
+          scannerMode: 'dotnet'
+          dotnetScannerVersion: ''
+          projectKey: 'InfraLab_Clean-Energy-CAPEX-Pipeline'
+          projectName: 'Clean Energy CAPEX Pipeline'
 
       # Add Node.js setup with version 20.x
       - task: NodeTool@0
@@ -40,14 +50,7 @@ jobs:
           yarn install
         displayName: "Install dependencies"
 
-      - task: SonarCloudPrepare@3
-        inputs:
-          SonarQube: 'capexpipeline'
-          organization: 'infralab'
-          scannerMode: 'dotnet'
-          dotnetScannerVersion: ''
-          projectKey: 'InfraLab_Clean-Energy-CAPEX-Pipeline'
-          projectName: 'Clean Energy CAPEX Pipeline'
+
 
       # Build the app using Yarn
       - script: |
