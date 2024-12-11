@@ -30,10 +30,12 @@ jobs:
         inputs:
           SonarQube: 'capexpipeline'
           organization: 'infralab'
-          scannerMode: 'dotnet'
-          dotnetScannerVersion: ''
-          projectKey: 'InfraLab_Clean-Energy-CAPEX-Pipeline'
-          projectName: 'Clean Energy CAPEX Pipeline'
+          scannerMode: 'cli'
+          configMode: 'manual'
+          cliProjectKey: 'InfraLab_Clean-Energy-CAPEX-Pipeline'
+          cliProjectName: 'Clean Energy CAPEX Pipeline'
+          cliSources: '.'
+
 
       # Add Node.js setup with version 20.x
       - task: NodeTool@0
