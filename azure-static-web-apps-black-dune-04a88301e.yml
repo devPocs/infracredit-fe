@@ -9,7 +9,11 @@ trigger:
     include:
       - master
 
+
+
+
 jobs:
+
   - job: build_and_deploy_job
     displayName: Build and Deploy Job
     condition: or(eq(variables['Build.Reason'], 'Manual'),or(eq(variables['Build.Reason'], 'PullRequest'),eq(variables['Build.Reason'], 'IndividualCI')))
@@ -36,10 +40,20 @@ jobs:
           yarn install
         displayName: "Install dependencies"
 
+      - task: SonarCloudPrepare@3
+        inputs:
+          SonarQube: 'capexpipeline'
+          organization: 'infralab'
+          scannerMode: 'dotnet'
+          dotnetScannerVersion: ''
+          projectKey: 'InfraLab_Clean-Energy-CAPEX-Pipeline'
+          projectName: 'Clean Energy CAPEX Pipeline'
+
       # Build the app using Yarn
       - script: |
           yarn build
         displayName: "Build application"
+
 
       - task: AzureStaticWebApp@0
         inputs:
@@ -47,3 +61,7 @@ jobs:
           app_location: "/"
           api_location: ""
           output_location: "dist"
+
+      - task: SonarCloudAnalyze@3
+        inputs:
+          jdkversion: 'JAVA_HOME_17_X64'
