@@ -23,7 +23,7 @@ const Nav = () => {
             <span className="block md:hidden">
               <FaUser className="text-lg sm:text-xl md:text-2xl" />
             </span>
-            <span className="hidden md:block">User</span>
+            <span className="hidden md:block">Transactor</span>
           </Link>
         </div>
         <div className="text-mint">
@@ -31,7 +31,7 @@ const Nav = () => {
             <span className="block md:hidden">
               <FaUser className="text-lg sm:text-xl md:text-2xl" />
             </span>
-            <span className="hidden md:block">Company</span>
+            <span className="hidden md:block">Client</span>
           </Link>
         </div>
       </div>

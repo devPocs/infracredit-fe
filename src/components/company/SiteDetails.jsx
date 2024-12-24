@@ -11,7 +11,7 @@ import {
   BsPencil,
 } from "react-icons/bs";
 
-const SiteDetails = ({ site, onBack, projectName, projectId }) => {
+const SiteDetails = ({ site, onBack, projectName, companyName, projectId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [hasChanges, setHasChanges] = useState(false);
   const [formData, setFormData] = useState({
@@ -43,7 +43,6 @@ const SiteDetails = ({ site, onBack, projectName, projectId }) => {
 
   useEffect(() => {
     if (site) {
-      console.log(site.id);
       setFormData(site);
     }
   }, [site]);
@@ -68,11 +67,12 @@ const SiteDetails = ({ site, onBack, projectName, projectId }) => {
     setIsEditing(false);
     setHasChanges(false);
     try {
-      const updatedFormData = {
+      const updatedSite = {
         ...formData,
         projectId: projectId,
       };
-      await updateSite(site.id, updatedFormData);
+      console.log(updatedSite, "updated site");
+      await updateSite(site.id, updatedSite);
       toast.success("Site updated successfully");
       onBack();
     } catch (error) {
@@ -137,11 +137,11 @@ const SiteDetails = ({ site, onBack, projectName, projectId }) => {
           {/* Company and Project Info */}
           <div className="flex flex-col gap-4">
             <div className="rounded border bg-white p-4 shadow-sm">
-              <span className="font-semibold">Company:</span>{" "}
-              <span>Lekki Solar Power Co</span>
+              <span className="font-bold">Client:</span>{" "}
+              <span>{companyName}</span>
             </div>
             <div className="rounded border bg-white p-4 shadow-sm">
-              <span className="font-semibold">Project:</span>{" "}
+              <span className="font-bold">Project:</span>{" "}
               <span>{projectName}</span>
             </div>
           </div>
@@ -525,6 +525,7 @@ SiteDetails.propTypes = {
   site: PropTypes.object.isRequired,
   onBack: PropTypes.func.isRequired,
   projectName: PropTypes.string,
+  projectId: PropTypes.string,
 };
 
 export default SiteDetails;

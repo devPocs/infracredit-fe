@@ -1,6 +1,6 @@
-//const API_BASE_URL = "https://localhost:7140";
-const API_BASE_URL =
-  "https://capexpipelineapi-g2g8gygxghcxc2hz.eastus-01.azurewebsites.net";
+const API_BASE_URL = "https://localhost:7140";
+// const API_BASE_URL =
+//   "https://capexpipelineapi-g2g8gygxghcxc2hz.eastus-01.azurewebsites.net";
 
 export const createCompany = async (formData) => {
   const payload = {
@@ -26,7 +26,6 @@ export const createCompany = async (formData) => {
   }
 
   try {
-    console.log("payload", payload);
     const response = await fetch(`${API_BASE_URL}/api/Company/create`, {
       method: "POST",
       headers: {
@@ -36,7 +35,6 @@ export const createCompany = async (formData) => {
     });
 
     if (!response.ok) {
-      console.log(response);
       throw new Error("Failed to create company");
     }
 
@@ -49,7 +47,6 @@ export const createCompany = async (formData) => {
 
 export const getAllCompanies = async () => {
   try {
-    console.log("getting companies");
     const response = await fetch(`${API_BASE_URL}/api/Company/companies`);
     if (!response.ok) {
       throw new Error("Failed to fetch companies");
@@ -90,9 +87,7 @@ export const getProjectsByCompanyId = async (id) => {
 };
 
 export const createSite = async (projectCode, formData) => {
-  console.log("projectCode =", projectCode);
   try {
-    console.log("Creating site with payload:", formData);
     const response = await fetch(
       `${API_BASE_URL}/api/Site/${projectCode}/createSite`,
       {
@@ -132,9 +127,8 @@ export const getSites = async (projectCode) => {
 };
 
 export const updateSite = async (siteId, formData) => {
-  console.log("siteId =", siteId);
+  console.log("updating site details...");
   try {
-    console.log("Updating site with payload:", formData);
     const response = await fetch(`${API_BASE_URL}/api/Site/${siteId}/update`, {
       method: "PUT",
       headers: {

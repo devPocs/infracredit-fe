@@ -6,7 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { useCompany } from "../../features/company/hooks/useCompany";
 import { toast } from "react-toastify";
 
-const CreateSite = ({ onClose, projectCode, companyId }) => {
+const CreateSite = ({
+  onClose,
+  projectCode,
+  companyId,
+  companyName,
+  projectName,
+}) => {
   const { addSite, fetchCompanyById } = useCompany();
   const { setIsLoading } = useLoading();
   const navigate = useNavigate();
@@ -86,10 +92,10 @@ const CreateSite = ({ onClose, projectCode, companyId }) => {
 
         <div className="mb-6 grid grid-cols-2 gap-4">
           <div className="rounded border p-4">
-            <span className="font-semibold">Company:</span> Company Name
+            <span className="font-semibold">Company:</span> {companyName}
           </div>
           <div className="rounded border p-4">
-            <span className="font-semibold">Project:</span> Project Name
+            <span className="font-semibold">Project:</span> {projectName}
           </div>
         </div>
 
@@ -434,6 +440,10 @@ const CreateSite = ({ onClose, projectCode, companyId }) => {
 
 CreateSite.propTypes = {
   onClose: PropTypes.func.isRequired,
+  projectCode: PropTypes.string,
+  companyId: PropTypes.number,
+  projectName: PropTypes.string,
+  companyName: PropTypes.string,
 };
 
 export default CreateSite;

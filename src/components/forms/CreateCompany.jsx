@@ -75,6 +75,7 @@ const CreateCompanyForm = ({ onClose }) => {
       toast.success("Company created successfully");
       onClose();
     } catch (error) {
+      console.log(error);
       toast.error(error.message || "Failed to create company");
     } finally {
       setIsLoading(false);

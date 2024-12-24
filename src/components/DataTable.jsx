@@ -1,15 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-const DataTable = ({ data, onRowDoubleClick, rowsPerPage = 10 }) => {
-  const columns =
-    data.length > 0
-      ? Object.keys(data[0]).map((key) => ({
-          header: key.charAt(0).toUpperCase() + key.slice(1),
-          accessor: key,
-        }))
-      : [];
-
+const DataTable = ({ data, columns, onRowDoubleClick, rowsPerPage = 10 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(data.length / rowsPerPage);
   const currentData = data.slice(
@@ -59,7 +51,9 @@ const DataTable = ({ data, onRowDoubleClick, rowsPerPage = 10 }) => {
                         key={colIndex}
                         className="whitespace-nowrap px-2 py-2 text-xs text-gray-700 sm:px-4 sm:text-sm lg:text-base"
                       >
-                        {row[column.accessor]}
+                        {column.cell
+                          ? column.cell(row[column.accessor])
+                          : row[column.accessor]}
                       </td>
                     ))}
                   </tr>
@@ -69,7 +63,6 @@ const DataTable = ({ data, onRowDoubleClick, rowsPerPage = 10 }) => {
           </div>
         </div>
       </div>
-
       <div className="mt-4 flex flex-col items-center justify-between gap-2 sm:flex-row">
         <button
           onClick={goToPreviousPage}
@@ -95,6 +88,13 @@ const DataTable = ({ data, onRowDoubleClick, rowsPerPage = 10 }) => {
 
 DataTable.propTypes = {
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      header: PropTypes.string.isRequired,
+      accessor: PropTypes.string.isRequired,
+      cell: PropTypes.func,
+    }),
+  ).isRequired,
   onRowDoubleClick: PropTypes.func,
   rowsPerPage: PropTypes.number,
 };

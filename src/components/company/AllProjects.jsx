@@ -3,73 +3,34 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const AllProjects = ({ projects, companyName, companyId }) => {
-  const calculateProjectMetrics = (projects) => {
-    if (!projects || !Array.isArray(projects)) {
-      return {
-        totalSites: 0,
-        totalPvCapacity: 0,
-        totalCapex: 0,
-      };
-    }
-
-    return projects.reduce(
-      (acc, project) => {
-        const sitesCount = project.sites?.length || 0;
-        const projectPvCapacity =
-          project.sites?.reduce(
-            (total, site) => total + (site?.pvCapacitykWp || 0),
-            0,
-          ) || 0;
-
-        const projectCapex =
-          project.sites?.reduce(
-            (total, site) => total + (site?.capex || 0),
-            0,
-          ) || 0;
-
-        return {
-          totalSites: acc.totalSites + sitesCount,
-          totalPvCapacity: acc.totalPvCapacity + projectPvCapacity,
-          totalCapex: acc.totalCapex + projectCapex,
-        };
-      },
-      {
-        totalSites: 0,
-        totalPvCapacity: 0,
-        totalCapex: 0,
-      },
-    );
-  };
   const navigate = useNavigate();
-
-  const projectMetrics = calculateProjectMetrics(projects);
 
   const tableData = projects.map((project) => ({
     projectCode: project.projectCode,
     projectName: project.name,
-    numberOfSites: projectMetrics.totalSites,
-    capex: projectMetrics.totalCapex,
-    totalPVCapacity: projectMetrics.totalPvCapacity,
+    numberOfSites: project.sites?.length || 0,
+    capex:
+      project.sites?.reduce((total, site) => total + (site?.capex || 0), 0) ||
+      0,
+    totalPVCapacity:
+      project.sites?.reduce(
+        (total, site) => total + (site?.pvCapacitykWp || 0),
+        0,
+      ) || 0,
   }));
 
-  const projectColumns = [
+  const columns = [
+    { header: "Project Name", accessor: "projectName" },
+    { header: "Number of Sites", accessor: "numberOfSites" },
     {
-      header: "Project Name",
-      accessor: "projectName",
-    },
-    {
-      header: "Number of Sites",
-      accessor: "numberOfSites",
-    },
-    {
-      header: "Size (₦ Billion)",
+      header: "Capex (in Billions)",
       accessor: "capex",
-      cell: (value) => `₦${(value / 1000000000).toFixed(2)}B`,
+      cell: (value) => `${value}`,
     },
     {
       header: "Total PV Capacity (kWp)",
       accessor: "totalPVCapacity",
-      cell: (value) => `${value} kWp`,
+      cell: (value) => `${value}`,
     },
   ];
 
@@ -80,7 +41,7 @@ const AllProjects = ({ projects, companyName, companyId }) => {
 
     navigate(`/company/project/${fullProject.projectCode}/sites`, {
       state: {
-        sites: fullProject.sites,
+        sites: fullProject.sites || [],
         projectName: fullProject.name,
         companyName: companyName,
         projectCode: fullProject.projectCode,
@@ -97,7 +58,7 @@ const AllProjects = ({ projects, companyName, companyId }) => {
         </h2>
         <div className="overflow-hidden rounded-lg border bg-white shadow">
           <DataTable
-            columns={projectColumns}
+            columns={columns}
             data={tableData}
             onRowDoubleClick={handleRowDoubleClick}
           />
@@ -110,17 +71,18 @@ const AllProjects = ({ projects, companyName, companyId }) => {
 AllProjects.propTypes = {
   projects: PropTypes.arrayOf(
     PropTypes.shape({
-      sn: PropTypes.string,
       projectCode: PropTypes.string,
-      projectId: PropTypes.string,
       name: PropTypes.string,
-      numberOfSites: PropTypes.number,
-      capex: PropTypes.number,
-      totalPVCapacity: PropTypes.number,
-      sitesData: PropTypes.array,
+      sites: PropTypes.arrayOf(
+        PropTypes.shape({
+          capex: PropTypes.number,
+          pvCapacitykWp: PropTypes.number,
+        }),
+      ),
     }),
   ).isRequired,
-  companyName: PropTypes.string,
+  companyName: PropTypes.string.isRequired,
+  companyId: PropTypes.number.isRequired,
 };
 
 export default AllProjects;

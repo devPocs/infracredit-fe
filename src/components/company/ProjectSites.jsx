@@ -38,9 +38,9 @@ const ProjectSites = () => {
     { header: "LGA", accessor: "localGovernment" },
     { header: "PV Capacity (kWp)", accessor: "pvCapacitykWp" },
     {
-      header: "Capex (₦)",
+      header: "Capex (in Billions(₦))",
       accessor: "capex",
-      cell: (value) => `₦${value.toLocaleString()}`,
+      cell: (value) => `${value.toLocaleString()}`,
     },
     { header: "Duration (Months)", accessor: "months" },
     { header: "Status", accessor: "status" },
@@ -70,18 +70,18 @@ const ProjectSites = () => {
           onClick={handleCreateSiteOpen}
           className="w-full rounded bg-lagoon px-3 py-1.5 text-sm text-white transition-colors hover:bg-lagoon sm:w-auto sm:px-4 sm:py-2 sm:text-base"
         >
-          Create Site
+          Add Site
         </button>
       </div>
 
       <div className="mb-6 md:mb-8">
         <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
           <div className="rounded border p-3 text-sm shadow sm:p-4 sm:text-base">
-            <span className="">Company:</span>{" "}
+            <span className="text-xl font-bold">Client:</span>{" "}
             <span className="font-semibold text-navy">{companyName}</span>
           </div>
           <div className="rounded border p-3 text-sm shadow sm:p-4 sm:text-base">
-            <span className="">Project:</span>{" "}
+            <span className="text-xl font-bold">Project:</span>{" "}
             <span className="font-semibold text-navy">{projectName}</span>
           </div>
         </div>
@@ -144,6 +144,8 @@ const ProjectSites = () => {
       {isCreateSiteOpen && (
         <CreateSite
           onClose={handleCreateSiteClose}
+          companyName={companyName}
+          projectName={projectName}
           projectCode={projectCode}
           companyId={companyId}
         />
@@ -155,6 +157,7 @@ const ProjectSites = () => {
               site={selectedSite}
               onBack={handleDetailsClose}
               projectName={projectName}
+              companyName={companyName}
               projectId={projectCode}
             />
           </div>

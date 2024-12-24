@@ -3,7 +3,7 @@ import DataTable from "./../components/DataTable";
 import { useNavigate } from "react-router-dom";
 import { useGeneralPipeline } from "../features/generalPipeline/hooks/useGeneralPipeline";
 
-const GeneralPipeline = ({ pipelineData }) => {
+const GeneralPipeline = () => {
   const navigate = useNavigate();
   const { pipeline } = useGeneralPipeline();
 

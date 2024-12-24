@@ -5,11 +5,9 @@ const Dashboard = ({ company }) => {
   const calculateSiteMetrics = (company) => {
     if (!company || !company.projects)
       return { totalSites: 0, activeSites: 0, inactiveSites: 0 };
-
     const totalSites = company.projects.reduce((total, project) => {
       return total + (project.sites?.length || 0);
     }, 0);
-
     const { activeSites, inactiveSites } = company.projects.reduce(
       (acc, project) => {
         const activeCount =
@@ -17,7 +15,6 @@ const Dashboard = ({ company }) => {
         const inactiveCount =
           project.sites?.filter((site) => site.status === "Inactive").length ||
           0;
-
         return {
           activeSites: acc.activeSites + activeCount,
           inactiveSites: acc.inactiveSites + inactiveCount,
@@ -25,7 +22,6 @@ const Dashboard = ({ company }) => {
       },
       { activeSites: 0, inactiveSites: 0 },
     );
-
     return {
       totalSites,
       activeSites,
@@ -61,37 +57,35 @@ const Dashboard = ({ company }) => {
           </div>
         </div>
       </div>
-
       {/* Site Distribution Chart */}
-      <div className="mb-6 md:mb-8">
-        <div className="rounded-lg border bg-white p-4">
-          <div className="mx-auto aspect-[16/9] w-full max-w-2xl">
-            {/* You can replace this with an actual chart component */}
-            <div className="flex h-full items-center justify-center rounded-lg bg-gray-50">
-              <div className="text-center">
-                <div className="mb-2 text-sm font-medium text-gray-500">
-                  Site Distribution
-                </div>
-                <div className="flex justify-center gap-4 text-xs sm:text-sm">
-                  <span className="flex items-center gap-1">
-                    <span className="h-3 w-3 rounded-full bg-blue-500"></span>
-                    <span>Active Sites (65%)</span>
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <span className="h-3 w-3 rounded-full bg-gray-300"></span>
-                    <span>Inactive Sites (35%)</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* <div className="mb-6 md:mb-8"> */}
+      {/* <div className="rounded-lg border bg-white p-4"> */}
+      {/* <div className="mx-auto aspect-[16/9] w-full max-w-2xl"> */}
 
+      {/* <div className="flex h-full items-center justify-center rounded-lg bg-gray-50"> */}
+      {/* <div className="text-center"> */}
+      {/* <div className="mb-2 text-sm font-medium text-gray-500"> */}
+      {/* Site Distribution */}
+      {/* </div> */}
+      {/* <div className="flex justify-center gap-4 text-xs sm:text-sm"> */}
+      {/* <span className="flex items-center gap-1"> */}
+      {/* <span className="h-3 w-3 rounded-full bg-blue-500"></span> */}
+      {/* <span>Active Sites (65%)</span> */}
+      {/* </span> */}
+      {/* <span className="flex items-center gap-1"> */}
+      {/* <span className="h-3 w-3 rounded-full bg-gray-300"></span> */}
+      {/* <span>Inactive Sites (35%)</span> */}
+      {/* </span> */}
+      {/* </div> */}
+      {/* </div> */}
+      {/* </div> */}
+      {/* </div> */}
+      {/* </div> */}
+      {/* </div> */}
       {/* Company Contacts */}
       <div>
         <h2 className="mb-3 text-base font-semibold sm:text-lg md:mb-4 lg:text-xl">
-          Company Contact
+          Client Contact
         </h2>
         <div className="overflow-hidden rounded-lg border bg-white shadow">
           <div className="overflow-x-auto">
