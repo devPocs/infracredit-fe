@@ -1,13 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import MainLayout from "./../layout/MainLayout";
 import Home from "./../pages/Home";
-import Login from "./../pages/Login";
 import User from "./../pages/User";
 import Company from "./../pages/Company";
 import ProjectSites from "./../components/company/ProjectSites";
-import MoreData from "./../components/user/MoreData";
 import NotFound from "./../pages/NotFound";
-import GeneralPipeline from "../pages/GeneralPipeline";
+import GeneralPipeline from "./../pages/GeneralPipeline";
+import Unauthorized from "./../pages/Unauthorized";
+import { ProtectedRoute } from "./../auth/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -19,28 +19,40 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/login",
-        element: <Login />,
-      },
-      {
         path: "/user",
-        element: <User />,
-      },
-      {
-        path: "user/more-data",
-        element: <MoreData />,
+        element: (
+          <ProtectedRoute allowedRoles={["admin user"]}>
+            <User />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/company/:id",
-        element: <Company />,
+        element: (
+          <ProtectedRoute allowedRoles={["user, company"]}>
+            <Company />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/general-pipeline",
-        element: <GeneralPipeline />,
+        element: (
+          <ProtectedRoute allowedRoles={["admin, user"]}>
+            <GeneralPipeline />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/company/project/:projectId/sites",
-        element: <ProjectSites />,
+        element: (
+          <ProtectedRoute allowedRoles={["admin, user, company"]}>
+            <ProjectSites />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/unauthorized",
+        element: <Unauthorized />,
       },
       {
         path: "*",

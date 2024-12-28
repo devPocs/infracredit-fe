@@ -87,7 +87,7 @@ const Dashboard = ({ company }) => {
         <h2 className="mb-3 text-base font-semibold sm:text-lg md:mb-4 lg:text-xl">
           Client Contact
         </h2>
-        <div className="overflow-hidden rounded-lg border bg-white shadow">
+        <div className="mb-7 overflow-hidden rounded-lg border bg-white shadow">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">

@@ -162,6 +162,7 @@ const User = () => {
           </button>
         </div>
       </div>
+      <div className="mb-4 border-b border-gray-200"></div>
 
       {/* Company Overview Section */}
       <div className="mb-6 md:mb-8">
