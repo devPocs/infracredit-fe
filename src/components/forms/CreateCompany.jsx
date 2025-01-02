@@ -72,6 +72,7 @@ const CreateCompanyForm = ({ onClose }) => {
       };
 
       await addCompany(apiData);
+
       toast.success("Company created successfully");
       onClose();
     } catch (error) {

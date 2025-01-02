@@ -44,6 +44,40 @@ export const createCompany = async (formData) => {
     throw error;
   }
 };
+export const addCompanyUserRole = async (userInfo) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/Users/role`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userInfo),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to add users' roles");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error adding users' roles:", error);
+    throw error;
+  }
+};
+
+export const getCompanyId = async (email) => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/Users/role-with-id?email=${email}`,
+    );
+    if (!response.ok) {
+      throw new Error("Failed to fetch Company Id");
+    }
+    const data = await response.json();
+    return data.companyId; // Return only the companyId
+  } catch (error) {
+    console.error("Error fetching company Id:", error);
+    throw error;
+  }
+};
 
 export const getAllCompanies = async () => {
   try {

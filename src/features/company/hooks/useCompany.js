@@ -62,6 +62,7 @@ export const useCompany = () => {
       setIsLoading(false);
     }
   };
+
   const addProject = async (projectData) => {
     setIsLoading(true);
     try {

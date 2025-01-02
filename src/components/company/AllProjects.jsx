@@ -2,7 +2,7 @@ import DataTable from "./../DataTable";
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const AllProjects = ({ projects, companyName, companyId }) => {
+const AllProjects = ({ projects, companyName, companyId, metrics }) => {
   const navigate = useNavigate();
 
   const tableData = projects.map((project) => ({
@@ -52,6 +52,20 @@ const AllProjects = ({ projects, companyName, companyId }) => {
 
   return (
     <div>
+      <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-2">
+        <div className="border bg-mint p-3 text-sm shadow sm:p-4 sm:text-base">
+          <h3 className="mb-2 font-medium text-white">Total Projects</h3>
+          <p className="text-xl font-bold text-white sm:text-2xl">
+            {metrics.totalProjects}
+          </p>
+        </div>
+        <div className="border bg-lagoon p-3 text-sm shadow sm:p-4 sm:text-base">
+          <h3 className="mb-2 font-medium text-white">Total Projects</h3>
+          <p className="text-xl font-bold text-white sm:text-2xl">
+            {metrics.totalSites}
+          </p>
+        </div>
+      </div>
       <div className="mb-6 md:mb-8">
         <h2 className="mb-3 text-base font-semibold sm:text-lg md:mb-4 lg:text-xl">
           All Projects
@@ -71,8 +85,8 @@ const AllProjects = ({ projects, companyName, companyId }) => {
 AllProjects.propTypes = {
   projects: PropTypes.arrayOf(
     PropTypes.shape({
-      projectCode: PropTypes.string,
-      name: PropTypes.string,
+      projectCode: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
       sites: PropTypes.arrayOf(
         PropTypes.shape({
           capex: PropTypes.number,
@@ -82,7 +96,13 @@ AllProjects.propTypes = {
     }),
   ).isRequired,
   companyName: PropTypes.string.isRequired,
-  companyId: PropTypes.number.isRequired,
+  companyId: PropTypes.string.isRequired, // Changed to string since it comes from URL params
+  metrics: PropTypes.shape({
+    totalProjects: PropTypes.number.isRequired,
+    totalSites: PropTypes.number.isRequired,
+    totalPvCapacity: PropTypes.number.isRequired,
+    totalSize: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default AllProjects;

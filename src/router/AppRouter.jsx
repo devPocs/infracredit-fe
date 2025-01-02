@@ -8,6 +8,7 @@ import NotFound from "./../pages/NotFound";
 import GeneralPipeline from "./../pages/GeneralPipeline";
 import Unauthorized from "./../pages/Unauthorized";
 import { ProtectedRoute } from "./../auth/ProtectedRoute";
+import Admin from "../pages/Admin";
 
 const router = createBrowserRouter([
   {
@@ -21,15 +22,23 @@ const router = createBrowserRouter([
       {
         path: "/user",
         element: (
-          <ProtectedRoute allowedRoles={["admin user"]}>
+          <ProtectedRoute allowedRoles={["Admin", "User"]}>
             <User />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin",
+        element: (
+          <ProtectedRoute allowedRoles={["Admin"]}>
+            <Admin />
           </ProtectedRoute>
         ),
       },
       {
         path: "/company/:id",
         element: (
-          <ProtectedRoute allowedRoles={["user, company"]}>
+          <ProtectedRoute allowedRoles={["Admin", "User", "Company"]}>
             <Company />
           </ProtectedRoute>
         ),
@@ -37,7 +46,7 @@ const router = createBrowserRouter([
       {
         path: "/general-pipeline",
         element: (
-          <ProtectedRoute allowedRoles={["admin, user"]}>
+          <ProtectedRoute allowedRoles={["Admin", "User"]}>
             <GeneralPipeline />
           </ProtectedRoute>
         ),
@@ -45,7 +54,7 @@ const router = createBrowserRouter([
       {
         path: "/company/project/:projectId/sites",
         element: (
-          <ProtectedRoute allowedRoles={["admin, user, company"]}>
+          <ProtectedRoute allowedRoles={["Admin", "User", "Company"]}>
             <ProjectSites />
           </ProtectedRoute>
         ),

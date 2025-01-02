@@ -1,13 +1,17 @@
-// src/context/AuthProvider.jsx
 import { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
 import { AuthContext } from "./AuthenticationContext";
 import PropTypes from "prop-types";
+import { toast } from "react-toastify";
+import { getCompanyId } from "../apis/companyApis";
 
 const AuthProvider = ({ children }) => {
   const { instance, accounts } = useMsal();
   const [userRole, setUserRole] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isValidUser, setIsValidUser] = useState(false);
+  const [companyId, setCompanyId] = useState(null);
+  const [redirectPath, setRedirectPath] = useState(null);
 
   const login = async () => {
     try {
@@ -21,6 +25,9 @@ const AuthProvider = ({ children }) => {
     try {
       instance.logoutPopup();
       setUserRole(null);
+      setIsValidUser(false);
+      setCompanyId(null);
+      setRedirectPath(null);
     } catch (error) {
       console.error("Logout failed:", error);
     }
@@ -28,23 +35,39 @@ const AuthProvider = ({ children }) => {
 
   const checkUserRole = async (email) => {
     try {
-      const response = await fetch("/api/user-role", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `https://localhost:7140/api/Users/role?email=${email}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         },
-        body: JSON.stringify({ email }),
-      });
-
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch user role");
       }
+      const userData = await response.json();
+      if (userData.role) {
+        setUserRole(userData.role);
+        setIsValidUser(true);
 
-      const data = await response.json();
-      setUserRole(data.role);
+        if (userData.role === "Company") {
+          const companyData = await getCompanyId(email);
+          setCompanyId(companyData);
+          setRedirectPath(`/company/${companyData}`);
+        }
+      } else {
+        setUserRole(null);
+        setIsValidUser(false);
+        toast.error("Unauthorized access");
+        logout();
+      }
     } catch (error) {
       console.error("Error checking user role:", error);
       setUserRole(null);
+      setIsValidUser(false);
+      toast.error("Unauthorized access");
+      logout();
     } finally {
       setLoading(false);
     }
@@ -52,9 +75,11 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (accounts[0]) {
+      setLoading(true);
       checkUserRole(accounts[0].username);
     } else {
       setLoading(false);
+      setIsValidUser(false);
     }
   }, [accounts]);
 
@@ -63,12 +88,15 @@ const AuthProvider = ({ children }) => {
     loading,
     login,
     logout,
-    isAuthenticated: !!accounts[0],
+    isAuthenticated: isValidUser && !!accounts[0],
     userEmail: accounts[0]?.username,
+    companyId,
+    redirectPath,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
+
 AuthProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

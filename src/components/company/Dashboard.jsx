@@ -1,58 +1,42 @@
 import PropTypes from "prop-types";
-const Dashboard = ({ company }) => {
+const Dashboard = ({ company, metrics }) => {
   const companyContacts = company?.companyContacts || [];
 
-  const calculateSiteMetrics = (company) => {
-    if (!company || !company.projects)
-      return { totalSites: 0, activeSites: 0, inactiveSites: 0 };
-    const totalSites = company.projects.reduce((total, project) => {
-      return total + (project.sites?.length || 0);
-    }, 0);
-    const { activeSites, inactiveSites } = company.projects.reduce(
-      (acc, project) => {
-        const activeCount =
-          project.sites?.filter((site) => site.status === "Active").length || 0;
-        const inactiveCount =
-          project.sites?.filter((site) => site.status === "Inactive").length ||
-          0;
-        return {
-          activeSites: acc.activeSites + activeCount,
-          inactiveSites: acc.inactiveSites + inactiveCount,
-        };
-      },
-      { activeSites: 0, inactiveSites: 0 },
-    );
-    return {
-      totalSites,
-      activeSites,
-      inactiveSites,
-    };
-  };
-
-  const siteMetrics = calculateSiteMetrics(company);
   return (
     <div>
       <div className="mb-6 md:mb-8">
         <h2 className="mb-3 text-base font-semibold sm:text-lg md:mb-4 lg:text-xl">
-          Sites Metrics
+          Client Metrics
         </h2>
-        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
           <div className="border bg-mint p-3 text-sm shadow sm:p-4 sm:text-base">
-            <h3 className="mb-2 font-medium text-white">Total Sites</h3>
+            <h3 className="mb-2 font-medium text-white">Total Projects</h3>
             <p className="text-xl font-bold text-white sm:text-2xl">
-              {siteMetrics.totalSites}
+              {metrics.totalProjects}
             </p>
           </div>
-          <div className="bg-sunset p-3 text-sm shadow sm:p-4 sm:text-base">
+          {/* <div className="bg-sunset p-3 text-sm shadow sm:p-4 sm:text-base">
             <h3 className="mb-2 font-medium text-white">Active Sites</h3>
             <p className="text-xl font-bold text-white sm:text-2xl">
               {siteMetrics.activeSites}
             </p>
-          </div>
+          </div> */}
           <div className="bg-lagoon p-3 text-sm shadow sm:p-4 sm:text-base">
-            <h3 className="mb-2 font-medium text-white">Inactive Sites</h3>
+            <h3 className="mb-2 font-medium text-white">Total Sites</h3>
             <p className="text-xl font-bold text-white sm:text-2xl">
-              {siteMetrics.inactiveSites}
+              {metrics.totalSites}
+            </p>
+          </div>
+          <div className="bg-sunset p-3 text-sm shadow sm:p-4 sm:text-base">
+            <h3 className="mb-2 font-medium text-white">Total PV Capacity</h3>
+            <p className="text-xl font-bold text-white sm:text-2xl">
+              {metrics.totalPvCapacity}
+            </p>
+          </div>
+          <div className="bg-navy p-3 text-sm shadow sm:p-4 sm:text-base">
+            <h3 className="mb-2 font-medium text-white">Total Size</h3>
+            <p className="text-xl font-bold text-white sm:text-2xl">
+              {metrics.totalSize}
             </p>
           </div>
         </div>
@@ -173,9 +157,46 @@ Dashboard.propTypes = {
         contactType: PropTypes.string,
         email: PropTypes.string,
         phoneNumber: PropTypes.string,
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
       }),
     ),
+  }).isRequired,
+  metrics: PropTypes.shape({
+    totalProjects: PropTypes.number.isRequired,
+    totalSites: PropTypes.number.isRequired,
+    totalPvCapacity: PropTypes.number.isRequired,
+    totalSize: PropTypes.number.isRequired,
   }).isRequired,
 };
 
 export default Dashboard;
+
+// const calculateSiteMetrics = (company) => {
+//   if (!company || !company.projects)
+//     return { totalSites: 0, activeSites: 0, inactiveSites: 0 };
+//   const totalSites = company.projects.reduce((total, project) => {
+//     return total + (project.sites?.length || 0);
+//   }, 0);
+//   const { activeSites, inactiveSites } = company.projects.reduce(
+//     (acc, project) => {
+//       const activeCount =
+//         project.sites?.filter((site) => site.status === "Active").length || 0;
+//       const inactiveCount =
+//         project.sites?.filter((site) => site.status === "Inactive").length ||
+//         0;
+//       return {
+//         activeSites: acc.activeSites + activeCount,
+//         inactiveSites: acc.inactiveSites + inactiveCount,
+//       };
+//     },
+//     { activeSites: 0, inactiveSites: 0 },
+//   );
+//   return {
+//     totalSites,
+//     activeSites,
+//     inactiveSites,
+//   };
+// };
+
+// const siteMetrics = calculateSiteMetrics(company);

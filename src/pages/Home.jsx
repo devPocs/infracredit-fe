@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
 import skyline from "./../assets/skyline.jpg";
 import { useAuth } from "../auth/AuthenticationContext";
 import { useIsAuthenticated } from "@azure/msal-react";
+import { Loader } from "../components/Loader";
 
 const Home = () => {
-  const { login, logout, userRole } = useAuth();
+  const { login, logout, userRole, loading } = useAuth();
   const isAuthenticated = useIsAuthenticated();
 
   return (
@@ -14,8 +14,9 @@ const Home = () => {
         <h1 className="mb-6 text-center text-3xl font-semibold md:text-5xl">
           Welcome to Infracredit
         </h1>
-
-        {isAuthenticated ? (
+        {loading ? (
+          <Loader />
+        ) : isAuthenticated && userRole ? (
           <div className="flex w-full max-w-xs flex-col items-center gap-4">
             <p className="text-center text-gray-600">
               You are logged in as {userRole}
@@ -26,14 +27,6 @@ const Home = () => {
             >
               Sign Out
             </button>
-            {/* Add navigation buttons based on user role */}
-            {userRole === "Admin" && (
-              <Link to="/admin" className="w-full">
-                <button className="w-full rounded bg-blue-500 p-2 font-semibold text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                  Go to Admin Dashboard
-                </button>
-              </Link>
-            )}
           </div>
         ) : (
           <button
@@ -44,7 +37,6 @@ const Home = () => {
           </button>
         )}
       </div>
-
       {/* Right Side: Skyline Image (Hidden on Mobile) */}
       <div
         className="hidden w-full bg-cover bg-center md:block md:w-1/2"
