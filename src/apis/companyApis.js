@@ -160,22 +160,27 @@ export const getSites = async (projectCode) => {
   }
 };
 
-export const updateSite = async (siteId, formData) => {
+export const updateSite = async (siteId, formData, projectId) => {
   console.log("updating site details...");
   try {
+    console.log(siteId);
+    const requestBody = {
+      ...formData,
+      Project: projectId, // Adding the Project field
+    };
+
     const response = await fetch(`${API_BASE_URL}/api/Site/${siteId}/update`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData.message || "Failed to update site");
     }
-
     return await response.json();
   } catch (error) {
     console.error("Error updating site:", error);

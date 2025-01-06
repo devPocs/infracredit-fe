@@ -6,9 +6,12 @@ export const GeneralPipelineContext = createContext();
 
 export const GeneralPipelineProvider = ({ children }) => {
   const [pipeline, setPipeline] = useState([]);
+  const [selectedDuration, setSelectedDuration] = useState("all");
 
   return (
-    <GeneralPipelineContext.Provider value={{ pipeline, setPipeline }}>
+    <GeneralPipelineContext.Provider
+      value={{ pipeline, setPipeline, selectedDuration, setSelectedDuration }}
+    >
       {children}
     </GeneralPipelineContext.Provider>
   );

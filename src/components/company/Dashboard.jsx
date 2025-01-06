@@ -34,9 +34,9 @@ const Dashboard = ({ company, metrics }) => {
             </p>
           </div>
           <div className="bg-navy p-3 text-sm shadow sm:p-4 sm:text-base">
-            <h3 className="mb-2 font-medium text-white">Total Size</h3>
+            <h3 className="mb-2 font-medium text-white">Total Capex</h3>
             <p className="text-xl font-bold text-white sm:text-2xl">
-              {metrics.totalSize}
+              ₦{metrics.totalSize}B
             </p>
           </div>
         </div>

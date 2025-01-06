@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useCompany } from "./../features/company/hooks/useCompany";
 
 const User = () => {
+  const [selectedDuration, setSelectedDuration] = useState("all");
   const { companies } = useCompany();
   const navigate = useNavigate();
 
@@ -166,9 +167,41 @@ const User = () => {
 
       {/* Company Overview Section */}
       <div className="mb-6 md:mb-8">
-        <h2 className="lg:text-md mb-3 text-base font-semibold sm:text-lg md:mb-4">
-          Clients Overview
-        </h2>
+        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="lg:text-md text-base font-semibold sm:text-lg">
+            Clients Overview
+          </h2>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4">
+            <span className="text-sm font-medium text-gray-700 sm:text-base">
+              Filter by duration:
+            </span>
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => setSelectedDuration("all")}
+                className={`rounded-md px-2 py-1 text-sm transition-colors sm:px-3 sm:py-1.5 ${
+                  selectedDuration === "all"
+                    ? "bg-lagoon text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+              >
+                All
+              </button>
+              {[12, 24, 36].map((months) => (
+                <button
+                  key={months}
+                  onClick={() => setSelectedDuration(months.toString())}
+                  className={`rounded-md px-2 py-1 text-sm transition-colors sm:px-3 sm:py-1.5 ${
+                    selectedDuration === months.toString()
+                      ? "bg-lagoon text-white"
+                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                  }`}
+                >
+                  {months} months
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
         <div className="grid gap-3 text-white sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
           <div
             onClick={handleCompaniesClick}

@@ -4,6 +4,8 @@ import CreateUser from "../components/forms/CreateUser";
 
 const Admin = () => {
   const [isCreateUserOpen, setIsCreateUserOpen] = useState(false);
+
+  // eslint-disable-next-line no-unused-vars
   const [users, setUsers] = useState([]);
 
   const columns = [
@@ -25,9 +27,9 @@ const Admin = () => {
         <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:gap-4">
           <button
             onClick={handleCreateUserOpen}
-            className="w-full rounded bg-green-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-green-600 sm:w-auto sm:px-4 sm:py-2 sm:text-base"
+            className="w-full bg-green-500 px-3 py-1.5 text-sm text-white transition-colors hover:bg-green-600 sm:w-auto sm:px-4 sm:py-2 sm:text-base"
           >
-            Add Clie
+            Add Client
           </button>
         </div>
       </div>

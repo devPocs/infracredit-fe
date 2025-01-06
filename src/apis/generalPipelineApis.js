@@ -32,3 +32,23 @@ export const getAllCompaniesGeneralPipeline = async () => {
     throw error;
   }
 };
+
+export const getAllCompaniesGeneralPipelineByMonth = async (
+  projectCode,
+  months,
+) => {
+  try {
+    const response = await fetch(
+      `${API_BASE_URL}/api/Site/${projectCode}/sitesByMonth/${months}`,
+    );
+
+    console.log(response);
+    if (!response.ok) {
+      throw new Error("Failed to fetch results!");
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Error fetching results:", error);
+    throw error;
+  }
+};

@@ -1,6 +1,5 @@
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
-import Nav from "../components/Nav";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthenticationContext";
 import { useEffect } from "react";

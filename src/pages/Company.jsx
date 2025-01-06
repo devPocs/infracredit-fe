@@ -26,10 +26,8 @@ const Company = () => {
 
     return companyData.projects.reduce(
       (acc, project) => {
-        // Count sites in this project
         const projectSitesCount = project.sites?.length || 0;
 
-        // Calculate project totals from sites
         const projectTotals = project.sites?.reduce(
           (siteAcc, site) => ({
             pvCapacity: siteAcc.pvCapacity + (site.pvCapacitykWp || 0),
@@ -66,6 +64,7 @@ const Company = () => {
       fetchCompanyById(id);
       fetchProjectsByCompanyId(id);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id, userRole, companyId]);
 
   if (loading) {

@@ -60,7 +60,7 @@ const AllProjects = ({ projects, companyName, companyId, metrics }) => {
           </p>
         </div>
         <div className="border bg-lagoon p-3 text-sm shadow sm:p-4 sm:text-base">
-          <h3 className="mb-2 font-medium text-white">Total Projects</h3>
+          <h3 className="mb-2 font-medium text-white">Total Sites</h3>
           <p className="text-xl font-bold text-white sm:text-2xl">
             {metrics.totalSites}
           </p>

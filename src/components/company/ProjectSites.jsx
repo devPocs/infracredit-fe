@@ -168,10 +168,10 @@ const ProjectSites = () => {
 };
 
 ProjectSites.propTypes = {
-  sites: PropTypes.arrayOf(PropTypes.object).isRequired,
-  projectName: PropTypes.string.isRequired,
-  companyName: PropTypes.string.isRequired,
-  onBack: PropTypes.func.isRequired,
+  sites: PropTypes.arrayOf(PropTypes.object),
+  projectName: PropTypes.string,
+  companyName: PropTypes.string,
+  onBack: PropTypes.func,
 };
 
 export default ProjectSites;
